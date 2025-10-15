@@ -3,16 +3,8 @@ const path = require('path');
 
 // Predefined popular tickers
 const popularTickers = {
-    // Stocks
-    'AAPL': { name: 'Apple Inc.', exchange: 'NASDAQ', type: 'stock' },
-    'GOOGL': { name: 'Alphabet Inc.', exchange: 'NASDAQ', type: 'stock' },
-    'MSFT': { name: 'Microsoft Corp.', exchange: 'NASDAQ', type: 'stock' },
-    'TSLA': { name: 'Tesla Inc.', exchange: 'NASDAQ', type: 'stock' },
-    'AMZN': { name: 'Amazon.com Inc.', exchange: 'NASDAQ', type: 'stock' },
-    'NVDA': { name: 'NVIDIA Corp.', exchange: 'NASDAQ', type: 'stock' },
-    'META': { name: 'Meta Platforms', exchange: 'NASDAQ', type: 'stock' },
-    'SPY': { name: 'SPDR S&P 500 ETF', exchange: 'NYSEARCA', type: 'etf' },
-    'QQQ': { name: 'Invesco QQQ Trust', exchange: 'NASDAQ', type: 'etf' },
+    "RTX": { name: "Raytheon Technologies", exchange: "NYSE", type: "stock" },
+
     
     // Crypto
     'BTCUSD': { name: 'Bitcoin', exchange: 'COINBASE', type: 'crypto' },
