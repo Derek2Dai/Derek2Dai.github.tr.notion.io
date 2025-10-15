@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Stock Heatmap</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{margin:0;padding:8px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff}
+.chart-container{border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.chart-header{background:#f8f9fa;padding:12px 16px;border:1px solid #e1e5e9;border-bottom:none;font-size:14px;font-weight:600;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.controls{display:flex;gap:6px;flex-wrap:wrap}
+.controls select,.controls button{font-size:12px;padding:4px 8px;border:1px solid #d0d4d9;border-radius:4px;background:#fff;cursor:pointer}
+.controls button.active{background:#3498db;color:#fff;border-color:#3498db}
+#heatmap-wrapper{border:1px solid #e1e5e9}
+.footer-note{margin:10px 4px;font-size:11px;color:#888;text-align:center}
+</style></head>
+<body>
+<div class="chart-container">
+  <div class="chart-header">
+    <span>TradingView Stock Heatmap</span>
+    <div class="controls">
+      <select id="market">
+        <option value="america">US (All)</option>
+        <option value="us">US (Major)</option>
+        <option value="europe">Europe</option>
+        <option value="asia">Asia</option>
+        <option value="world">World</option>
+        <option value="crypto">Crypto</option>
+      </select>
+      <select id="metric">
+        <option value="change">Change %</option>
+        <option value="volume">Volume</option>
+        <option value="price_earnings_ttm">P/E (TTM)</option>
+        <option value="market_cap_basic">Market Cap</option>
+        <option value="dividends_yield_current">Dividend Yield</option>
+      </select>
+      <select id="theme">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+      <select id="sector">
+        <option value="">All Sectors</option>
+        <option value="Technology">Technology</option>
+        <option value="Financial">Financial</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="ConsumerDiscretionary">Consumer Discretionary</option>
+        <option value="Energy">Energy</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Industrials">Industrials</option>
+        <option value="RealEstate">Real Estate</option>
+        <option value="Materials">Materials</option>
+        <option value="ConsumerStaples">Consumer Staples</option>
+        <option value="CommunicationServices">Communication Services</option>
+      </select>
+      <button id="refreshBtn">Refresh</button>
+    </div>
+  </div>
+  <div id="heatmap-wrapper">
+    <div id="heatmap-container" style="width:100%;height:520px;"></div>
+  </div>
+</div>
+<div class="footer-note">Data and widget © TradingView</div>
+<script>
+function buildConfig(){
+  const market=document.getElementById('market').value;
+  const metric=document.getElementById('metric').value;
+  const theme=document.getElementById('theme').value;
+  const sector=document.getElementById('sector').value;
+  return {
+    dateRange:"1D",
+    exchange:"",
+    showSymbolTooltip:true,
+    colorTheme:theme,
+    dataSource:market,
+    blockSize:"market_cap_basic",
+    blockColor:metric,
+    locale:"en",
+    symbolUrl:"https://www.tradingview.com/symbol/{symbol}/",
+    width:"100%",
+    height:520,
+    showToolbar:true,
+    isDataSetEnabled:false,
+    children: sector ? [{type:"sector",value:sector}] : []
+  };
+}
+function loadHeatmap(){
+  const container=document.getElementById('heatmap-container');
+  container.innerHTML="";
+  const script=document.createElement('script');
+  script.type='text/javascript';
+  script.src='https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js';
+  script.async=true;
+  script.innerHTML=JSON.stringify(buildConfig());
+  container.appendChild(script);
+}
+document.getElementById('refreshBtn').addEventListener('click',loadHeatmap);
+['market','metric','theme','sector'].forEach(id=>{
+  document.getElementById(id).addEventListener('change',loadHeatmap);
+});
+(function initFromQuery(){
+  const p=new URLSearchParams(location.search);
+  if(p.has('market')) document.getElementById('market').value=p.get('market');
+  if(p.has('metric')) document.getElementById('metric').value=p.get('metric');
+  if(p.has('theme')) document.getElementById('theme').value=p.get('theme');
+  if(p.has('sector')) document.getElementById('sector').value=p.get('sector');
+  loadHeatmap();
+})();
+</script>
+</body></html>
