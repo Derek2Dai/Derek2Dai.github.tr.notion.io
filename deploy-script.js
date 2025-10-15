@@ -4,6 +4,8 @@ const path = require('path');
 // Predefined popular tickers
 const popularTickers = {
     "RTX": { name: "Raytheon Technologies", exchange: "NYSE", type: "stock" },
+    "NOC": { name: "Northrop Grumman", exchange: "NYSE", type: "stock" },
+    "RKLB": { name: "Rocket Lab USA", exchange: "NASDAQ", type: "stock" },
 
     
     // Crypto
