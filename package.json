@@ -1,0 +1,13 @@
+{
+ "name": "tradingview-notion-widgets",
+  "version": "1.0.0",
+  "description": "TradingView widgets for Notion embedding",
+  "main": "deploy-script.js",
+  "scripts": {
+    "build": "node deploy-script.js",
+    "deploy": "npm run build && git add . && git commit -m 'Update charts' && git push origin main"
+  },
+  "keywords": ["tradingview", "notion", "widgets"],
+  "author": "Your Name",
+  "license": "MIT"
+}

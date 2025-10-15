@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Charts for Notion - All Tickers</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 40px; background: #fafafa; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; }
+        .ticker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin: 20px 0; }
+        .ticker-card { padding: 15px; background: #f8f9fa; border-radius: 8px; text-decoration: none; 
+                      color: #333; border: 1px solid #e1e5e9; transition: all 0.2s; }
+        .ticker-card:hover { background: #e9ecef; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .ticker-symbol { font-weight: bold; font-size: 16px; color: #2c3e50; }
+        .ticker-name { font-size: 14px; color: #666; margin-top: 4px; }
+        .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin: 30px 0 20px 0; }
+        .custom-chart { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 30px; }
+        .copy-url { background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .url-example { font-family: monospace; background: #f1f1f1; padding: 8px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📈 TradingView Charts for Notion</h1>
+        
+        <div class="copy-url">
+            <h3>🎯 How to Use:</h3>
+            <p>1. Click any ticker below to get the direct URL</p>
+            <p>2. Copy the URL and use <code>/embed</code> in Notion</p>
+            <p>3. For custom tickers, use: <span class="url-example">chart.html?ticker=SYMBOL&exchange=EXCHANGE</span></p>
+        </div>
+
+        <div class="ticker-card custom-chart">
+            <div class="ticker-symbol">🛠️ Custom Chart Builder</div>
+            <div class="ticker-name">chart.html?ticker=YOUR_SYMBOL&exchange=EXCHANGE&interval=D&theme=light</div>
+        </div>
+
+        
+            <h2 class="section-title">Stocks</h2>
+            <div class="ticker-grid">
+                
+                    <a href="aapl.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">AAPL</div>
+                        <div class="ticker-name">Apple Inc.</div>
+                    </a>
+                
+                    <a href="googl.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">GOOGL</div>
+                        <div class="ticker-name">Alphabet Inc.</div>
+                    </a>
+                
+                    <a href="msft.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">MSFT</div>
+                        <div class="ticker-name">Microsoft Corp.</div>
+                    </a>
+                
+                    <a href="tsla.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">TSLA</div>
+                        <div class="ticker-name">Tesla Inc.</div>
+                    </a>
+                
+                    <a href="amzn.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">AMZN</div>
+                        <div class="ticker-name">Amazon.com Inc.</div>
+                    </a>
+                
+                    <a href="nvda.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">NVDA</div>
+                        <div class="ticker-name">NVIDIA Corp.</div>
+                    </a>
+                
+                    <a href="meta.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">META</div>
+                        <div class="ticker-name">Meta Platforms</div>
+                    </a>
+                
+            </div>
+        
+            <h2 class="section-title">Etfs</h2>
+            <div class="ticker-grid">
+                
+                    <a href="spy.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">SPY</div>
+                        <div class="ticker-name">SPDR S&P 500 ETF</div>
+                    </a>
+                
+                    <a href="qqq.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">QQQ</div>
+                        <div class="ticker-name">Invesco QQQ Trust</div>
+                    </a>
+                
+            </div>
+        
+            <h2 class="section-title">Cryptos</h2>
+            <div class="ticker-grid">
+                
+                    <a href="btcusd.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">BTCUSD</div>
+                        <div class="ticker-name">Bitcoin</div>
+                    </a>
+                
+                    <a href="ethusd.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">ETHUSD</div>
+                        <div class="ticker-name">Ethereum</div>
+                    </a>
+                
+                    <a href="solusd.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">SOLUSD</div>
+                        <div class="ticker-name">Solana</div>
+                    </a>
+                
+                    <a href="adausd.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">ADAUSD</div>
+                        <div class="ticker-name">Cardano</div>
+                    </a>
+                
+            </div>
+        
+            <h2 class="section-title">Forexs</h2>
+            <div class="ticker-grid">
+                
+                    <a href="eurusd.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">EURUSD</div>
+                        <div class="ticker-name">Euro/US Dollar</div>
+                    </a>
+                
+                    <a href="gbpusd.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">GBPUSD</div>
+                        <div class="ticker-name">British Pound/US Dollar</div>
+                    </a>
+                
+                    <a href="usdjpy.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">USDJPY</div>
+                        <div class="ticker-name">US Dollar/Japanese Yen</div>
+                    </a>
+                
+                    <a href="audusd.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">AUDUSD</div>
+                        <div class="ticker-name">Australian Dollar/US Dollar</div>
+                    </a>
+                
+            </div>
+        
+            <h2 class="section-title">Indexs</h2>
+            <div class="ticker-grid">
+                
+                    <a href="spx.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">SPX</div>
+                        <div class="ticker-name">S&P 500 Index</div>
+                    </a>
+                
+                    <a href="ndx.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">NDX</div>
+                        <div class="ticker-name">NASDAQ 100 Index</div>
+                    </a>
+                
+                    <a href="dji.html" class="ticker-card" target="_blank">
+                        <div class="ticker-symbol">DJI</div>
+                        <div class="ticker-name">Dow Jones Industrial Average</div>
+                    </a>
+                
+            </div>
+        
+        
+        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <h3>🔗 URL Examples:</h3>
+            <p><strong>Apple:</strong> <code>aapl.html</code></p>
+            <p><strong>Bitcoin:</strong> <code>btcusd.html</code></p>
+            <p><strong>Custom Tesla:</strong> <code>chart.html?ticker=TSLA&exchange=NASDAQ&interval=1H</code></p>
+            <p><strong>Dark theme:</strong> <code>chart.html?ticker=AAPL&exchange=NASDAQ&theme=dark</code></p>
+        </div>
+    </div>
+</body>
+</html>
