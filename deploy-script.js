@@ -386,103 +386,91 @@ document.getElementById('refreshBtn').addEventListener('click',loadHeatmap);
   console.log('✅ Generated heatmap.html');
 }
 
+// ...existing code...
 function generateTickersBannerPage() {
-  // Default banner tickers (subset)
   const bannerTickers = [
-    { symbol: "NYSE:RTX", name: "RTX" },
-    { symbol: "NYSE:NOC", name: "NOC" },
-    { symbol: "NASDAQ:RKLB", name: "RKLB" },
-    { symbol: "NYSE:HIMS", name: "HIMS" },
-    { symbol: "COINBASE:BTCUSD", name: "BTCUSD" },
-    { symbol: "FX_IDC:EURUSD", name: "EURUSD" }
+    "NYSE:RTX",
+    "NYSE:NOC",
+    "NASDAQ:RKLB",
+    "NYSE:HIMS",
+    "COINBASE:BTCUSD",
+    "FX_IDC:EURUSD"
   ];
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Multi Ticker Banner</title>
+<title>Multi Quote Banner</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-body{margin:0;padding:8px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff}
-.banner-container{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
-.ticker-box{flex:0 0 140px;display:flex;flex-direction:column;border:1px solid #e1e5e9;border-radius:8px;overflow:hidden;background:#f8f9fa}
-.header{font-size:14px;font-weight:600;margin:0 0 8px 0;padding:8px 10px;background:#f8f9fa;border:1px solid #e1e5e9;border-radius:8px}
-.footer-note{margin:12px 4px;font-size:11px;color:#888;text-align:center}
-.theme-toggle{margin-left:auto}
-.controls{display:flex;gap:8px;align-items:center;margin:0 0 12px 0}
+body{margin:0;padding:12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff}
+h1{margin:0 0 12px;font-size:16px;font-weight:600}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.controls input,.controls select,.controls button{font-size:12px;padding:4px 8px;border:1px solid #d0d4d9;border-radius:4px;background:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.quote-item{border:1px solid #e1e5e9;border-radius:8px;padding:4px;background:#f8f9fa}
+.footer{margin-top:14px;font-size:11px;color:#888;text-align:center}
 </style>
 </head>
 <body>
-<h1 class="header" style="display:flex;align-items:center;gap:12px;">
-  Multi Ticker Banner
-  <select id="colorTheme" class="theme-toggle">
+<h1>TradingView Single Quote Banner</h1>
+<div class="controls">
+  <select id="colorTheme">
     <option value="light">Light</option>
     <option value="dark">Dark</option>
   </select>
-  <select id="logoOpt">
-    <option value="true">Show Logos</option>
-    <option value="false">Hide Logos</option>
-  </select>
-</h1>
-<div class="controls">
-  <input id="addSymbol" placeholder="EXCHANGE:SYMBOL" style="padding:4px 8px;font-size:12px;border:1px solid #d0d4d9;border-radius:4px;">
-  <button id="addBtn" style="padding:4px 10px;font-size:12px;border:1px solid #3498db;color:#3498db;background:#fff;border-radius:4px;cursor:pointer;">Add</button>
+  <input id="addSymbol" placeholder="EXCHANGE:SYMBOL">
+  <button id="addBtn">Add</button>
 </div>
-<div id="banner" class="banner-container"></div>
-<div class="footer-note">Widgets © TradingView. Query params: ?theme=dark&logos=false&list=NYSE:RTX,NASDAQ:RKLB</div>
+<div id="grid" class="grid"></div>
+<div class="footer">Use query params: ?theme=dark&list=NASDAQ:AAPL,NYSE:IBM,COINBASE:BTCUSD</div>
 <script>
-const defaultTickers=${JSON.stringify(bannerTickers)};
-const bannerEl=document.getElementById('banner');
-function createWidget(symbol, theme, logos){
-  const box=document.createElement('div');
-  box.className='ticker-box';
-  const script=document.createElement('script');
-  script.src='https://s3.tradingview.com/external-embedding/embed-widget-single-ticker.js';
-  script.async=true;
-  const config={
-    symbol,
-    width:140,
-    height:90,
-    locale:"en",
-    colorTheme:theme,
-    isTransparent:false,
-    showSymbolLogo: logos === 'true',
-    largeChartUrl: "https://www.tradingview.com/symbol/" + symbol.split(':')[1] + "/"
-  };
-  script.innerHTML=JSON.stringify(config);
-  box.appendChild(script);
-  bannerEl.appendChild(box);
-}
-function loadBanner(list){
-  bannerEl.innerHTML='';
-  list.forEach(t=>createWidget(t.symbol, getTheme(), getLogos()));
-}
-function getTheme(){return document.getElementById('colorTheme').value;}
-function getLogos(){return document.getElementById('logoOpt').value;}
+const defaultList = ${JSON.stringify(bannerTickers)};
+let symbols = [];
 function parseQuery(){
-  const p=new URLSearchParams(location.search);
-  if(p.has('theme')) document.getElementById('colorTheme').value=p.get('theme');
-  if(p.has('logos')) document.getElementById('logoOpt').value=p.get('logos');
-  if(p.has('list')){
-    const raw=p.get('list').split(',');
-    return raw.map(s=>({symbol:s.trim(), name:s.trim().split(':')[1]}));
-  }
-  return defaultTickers;
+  const p = new URLSearchParams(location.search);
+  if(p.get('theme')) document.getElementById('colorTheme').value = p.get('theme');
+  symbols = p.get('list')
+    ? p.get('list').split(',').map(s=>s.trim()).filter(Boolean)
+    : defaultList.slice();
 }
-document.getElementById('colorTheme').addEventListener('change',()=>loadBanner(currentList));
-document.getElementById('logoOpt').addEventListener('change',()=>loadBanner(currentList));
-document.getElementById('addBtn').addEventListener('click',()=>{
-  const val=document.getElementById('addSymbol').value.trim();
+function buildWidgetHTML(symbol, theme){
+  return \`
+  <div class="quote-item">
+    <div class="tradingview-widget-container">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+      {
+        "symbol": "\${symbol}",
+        "colorTheme": "\${theme}",
+        "isTransparent": false,
+        "locale": "en",
+        "width": 160
+      }
+      </script>
+    </div>
+  </div>\`;
+}
+function render(){
+  const theme = document.getElementById('colorTheme').value;
+  const grid = document.getElementById('grid');
+  grid.innerHTML = symbols.map(s => buildWidgetHTML(s, theme)).join('');
+}
+document.getElementById('colorTheme').addEventListener('change', render);
+document.getElementById('addBtn').addEventListener('click', () => {
+  const val = document.getElementById('addSymbol').value.trim();
   if(!val.includes(':')) return;
-  currentList.push({symbol:val,name:val.split(':')[1]});
-  loadBanner(currentList);
+  symbols.push(val);
   document.getElementById('addSymbol').value='';
+  render();
 });
-let currentList=parseQuery();
-loadBanner(currentList);
+parseQuery();
+render();
 </script>
 </body>
 </html>`;
+
   fs.writeFileSync(path.join(docsDir,'tickers.html'), html);
-  console.log('✅ Generated tickers.html');
+  console.log('✅ Updated tickers.html with single-quote widgets');
 }
