@@ -12,6 +12,7 @@ const popularTickers = {
     "FLNC": { name: "Fluence Energy", exchange: "NASDAQ", type: "stock" },
     "PLAB": { name: "Photronics, Inc.", exchange: "NASDAQ", type: "stock" },
     "BULL": { name: "Webbull Corp", exchange: "NASDAQ", type: "stock" },
+    "EOSE": { name: "Eos Energy Enterprises", exchange: "NASDAQ", type: "stock" },
     
     // Crypto
     'BTCUSD': { name: 'Bitcoin', exchange: 'COINBASE', type: 'crypto' },
