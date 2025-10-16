@@ -7,6 +7,11 @@ const popularTickers = {
     "NOC": { name: "Northrop Grumman", exchange: "NYSE", type: "stock" },
     "RKLB": { name: "Rocket Lab USA", exchange: "NASDAQ", type: "stock" },
     "HIMS": { name: "Hims & Hers Health", exchange: "NYSE", type: "stock" },
+    "LUMN": { name: "Lumen Technologies", exchange: "NYSE", type: "stock" },
+    "BITF": { name: "Bitfarms Ltd.", exchange: "NASDAQ", type: "stock" },
+    "FLNC": { name: "Fluence Energy", exchange: "NASDAQ", type: "stock" },
+    "PLAB": { name: "Photronics, Inc.", exchange: "NASDAQ", type: "stock" },
+    "BULL": { name: "Webbull Corp", exchange: "NASDAQ", type: "stock" },
     
     // Crypto
     'BTCUSD': { name: 'Bitcoin', exchange: 'COINBASE', type: 'crypto' },
