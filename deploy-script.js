@@ -386,15 +386,9 @@ document.getElementById('refreshBtn').addEventListener('click',loadHeatmap);
   console.log('✅ Generated heatmap.html');
 }
 
-// ...existing code...
 function generateTickersBannerPage() {
   const bannerTickers = [
-    "NYSE:RTX",
-    "NYSE:NOC",
-    "NASDAQ:RKLB",
-    "NYSE:HIMS",
-    "COINBASE:BTCUSD",
-    "FX_IDC:EURUSD"
+    "NYSE:RTX"
   ];
 
   const html = `<!DOCTYPE html>
