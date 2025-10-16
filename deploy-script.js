@@ -388,7 +388,12 @@ document.getElementById('refreshBtn').addEventListener('click',loadHeatmap);
 
 function generateTickersBannerPage() {
   const bannerTickers = [
-    "NYSE:RTX"
+    "NYSE:RTX",
+    "NYSE:NOC", 
+    "NASDAQ:RKLB",
+    "NYSE:HIMS",
+    "COINBASE:BTCUSD",
+    "FX_IDC:EURUSD"
   ];
 
   const html = `<!DOCTYPE html>
@@ -401,9 +406,10 @@ function generateTickersBannerPage() {
 body{margin:0;padding:12px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#fff}
 h1{margin:0 0 12px;font-size:16px;font-weight:600}
 .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.controls input,.controls select,.controls button{font-size:12px;padding:4px 8px;border:1px solid #d0d4d9;border-radius:4px;background:#fff}
+.controls input,.controls select,.controls button{font-size:12px;padding:4px 8px;border:1px solid #d0d4d9;border-radius:4px;background:#fff;cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
-.quote-item{border:1px solid #e1e5e9;border-radius:8px;padding:4px;background:#f8f9fa}
+.quote-item{border:1px solid #e1e5e9;border-radius:8px;padding:4px;background:#f8f9fa;position:relative}
+.remove-btn{position:absolute;top:4px;right:4px;background:#fff;border:1px solid #d0d4d9;border-radius:4px;font-size:10px;cursor:pointer;padding:2px 5px}
 .footer{margin-top:14px;font-size:11px;color:#888;text-align:center}
 </style>
 </head>
@@ -416,12 +422,14 @@ h1{margin:0 0 12px;font-size:16px;font-weight:600}
   </select>
   <input id="addSymbol" placeholder="EXCHANGE:SYMBOL">
   <button id="addBtn">Add</button>
+  <button id="clearBtn">Clear</button>
 </div>
 <div id="grid" class="grid"></div>
-<div class="footer">Use query params: ?theme=dark&list=NASDAQ:AAPL,NYSE:IBM,COINBASE:BTCUSD</div>
+<div class="footer">Query params: ?theme=dark&list=NASDAQ:AAPL,NYSE:IBM,COINBASE:BTCUSD</div>
 <script>
 const defaultList = ${JSON.stringify(bannerTickers)};
 let symbols = [];
+
 function parseQuery(){
   const p = new URLSearchParams(location.search);
   if(p.get('theme')) document.getElementById('colorTheme').value = p.get('theme');
@@ -429,28 +437,51 @@ function parseQuery(){
     ? p.get('list').split(',').map(s=>s.trim()).filter(Boolean)
     : defaultList.slice();
 }
-function buildWidgetHTML(symbol, theme){
-  return \`
-  <div class="quote-item">
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-      {
-        "symbol": "\${symbol}",
-        "colorTheme": "\${theme}",
-        "isTransparent": false,
-        "locale": "en",
-        "width": 160
-      }
-      </script>
-    </div>
-  </div>\`;
+
+function createQuote(symbol, theme){
+  const wrapper = document.createElement('div');
+  wrapper.className = 'quote-item';
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'remove-btn';
+  removeBtn.textContent = '×';
+  removeBtn.title = 'Remove';
+  removeBtn.onclick = () => {
+    symbols = symbols.filter(s => s !== symbol);
+    render();
+  };
+  wrapper.appendChild(removeBtn);
+
+  const tvContainer = document.createElement('div');
+  tvContainer.className = 'tradingview-widget-container';
+
+  const tvWidgetDiv = document.createElement('div');
+  tvWidgetDiv.className = 'tradingview-widget-container__widget';
+  tvContainer.appendChild(tvWidgetDiv);
+
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.async = true;
+  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';
+  script.innerHTML = JSON.stringify({
+    symbol,
+    colorTheme: theme,
+    isTransparent: false,
+    locale: "en",
+    width: 160
+  });
+
+  tvContainer.appendChild(script);
+  wrapper.appendChild(tvContainer);
+  return wrapper;
 }
+
 function render(){
   const theme = document.getElementById('colorTheme').value;
   const grid = document.getElementById('grid');
-  grid.innerHTML = symbols.map(s => buildWidgetHTML(s, theme)).join('');
+  grid.innerHTML = '';
+  symbols.forEach(s => grid.appendChild(createQuote(s, theme)));
 }
+
 document.getElementById('colorTheme').addEventListener('change', render);
 document.getElementById('addBtn').addEventListener('click', () => {
   const val = document.getElementById('addSymbol').value.trim();
@@ -459,6 +490,11 @@ document.getElementById('addBtn').addEventListener('click', () => {
   document.getElementById('addSymbol').value='';
   render();
 });
+document.getElementById('clearBtn').addEventListener('click', () => {
+  symbols = [];
+  render();
+});
+
 parseQuery();
 render();
 </script>
