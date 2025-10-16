@@ -261,7 +261,7 @@ function generateTickerHTML(config) {
             withdateranges: true,
             allow_symbol_change: true,
             hide_side_toolbar: false,
-            studies:["STD;MACD","STD;RSI"],
+            studies: ["MACD@tv-basic","RSI@tv-basic"], 
             studies_overrides: {},
             overrides: {
                 "paneProperties.background": "#ffffff",
